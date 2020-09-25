@@ -10,7 +10,7 @@ from enum import Enum
 import random
 from math import sqrt
 from collections import namedtuple
-from generic_search import dfs, node_to_path
+from generic_search import dfs, bfs, node_to_path, astart
 
 
 class Cell(str, Enum):
@@ -82,11 +82,52 @@ class Maze:
         self._grid[self.goal.row][self.goal.column] = Cell.GOAL
 
 
+def euclidean_distance(goal):
+    """欧几里德距离"""
+    def distance(ml):
+        x = ml.row - goal.row
+        y = ml.column - goal.column
+
+        return sqrt(x * x + y * y)
+    return distance
+
+
+def manhattan_distance(goal):
+    """曼哈顿距离"""
+    def distance(ml):
+        x = abs(ml.row - goal.row)
+        y = abs(ml.column - goal.column)
+
+        return x + y
+    return distance
+
+
 if __name__ == '__main__':
     m = Maze()
     print(m)
 
     solution = dfs(m.start, m.goal_test, m.successors)
+
+    if solution is None:
+        print("No solution found using deepth-first search")
+    else:
+        path = node_to_path(solution)
+        m.mark(path)
+        print(m)
+        m.clear(path)
+
+    solution = bfs(m.start, m.goal_test, m.successors)
+
+    if solution is None:
+        print("No solution found using deepth-first search")
+    else:
+        path = node_to_path(solution)
+        m.mark(path)
+        print(m)
+        m.clear(path)
+
+    distance = manhattan_distance(m.goal)
+    solution = astart(m.start, m.goal_test, m.successors, distance)
 
     if solution is None:
         print("No solution found using deepth-first search")
