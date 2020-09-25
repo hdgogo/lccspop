@@ -9,3 +9,7 @@
   - calculating\_pi.py 通过布莱尼茨公式计算PI
   - hanoi.py 汉诺塔问题
 
+- ch2
+  - dns_search.py 通过模拟核苷酸片段的查询演示线性搜索和二分搜索
+
+
